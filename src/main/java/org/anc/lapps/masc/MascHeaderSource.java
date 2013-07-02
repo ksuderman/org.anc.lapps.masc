@@ -1,21 +1,19 @@
-package org.anc.grid.data.masc;
+package org.anc.lapps.masc;
+
+import org.anc.index.api.Index;
+import org.anc.io.UTF8Reader;
+import org.anc.lapps.masc.index.MascHeaderIndex;
+import org.lappsgrid.api.Data;
+import org.lappsgrid.core.DataFactory;
+import org.lappsgrid.discriminator.DiscriminatorRegistry;
+import org.lappsgrid.discriminator.Types;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
-import org.anc.io.UTF8Reader;
-import org.lappsgrid.api.Data;
-import org.lappsgrid.api.DataSource;
-import org.lappsgrid.core.DataFactory;
-import org.lappsgrid.discriminator.Types;
 //import org.lappsgrid.discriminator.Types;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A DataSource that returns documents from the MASC.
@@ -25,48 +23,28 @@ import org.slf4j.LoggerFactory;
  * @author Keith Suderman
  *
  */
-public class MascDataSource implements DataSource
+public class MascHeaderSource extends AbstractDataSource
 {
-   private List<String> keys;
-   private static MascIndex index;
+   private final Logger logger = LoggerFactory.getLogger(MascHeaderSource.class);
+   private Index index;
 
-   private static Logger logger = LoggerFactory.getLogger(MascDataSource.class);
-   
-   static {
-      index = new MascIndex();
-      index.load();
-   }
-   
-   public MascDataSource()
+   public MascHeaderSource() throws IOException
    {
+      super();
+      index = new MascHeaderIndex();
       logger.info("Creating a MASC data source.");
-      keys = index.keys();
    }
 
-   public MascDataSource(Set<String> keys)
-   {
-      logger.info("Creating a filtered MASC data source.");
-      this.keys = new ArrayList<String>(keys);
-   }
-   
-   //@Override
-   protected Data list()
-   {        
-      logger.info("Listing.");
-      return new Data(Types.INDEX, collect(keys));
-   }
-
-//   @Override
    protected Data get(String key)
    {
-      
       logger.info("Getting document for {}", key);
-      File file = index.get(key);
-      if (file == null)
+      Index.Entry entry = index.getById(key);
+      if (entry == null)
       {
          logger.error("No such file.");
          return DataFactory.error("No such file.");
       }
+      File file = new File(entry.getPath());
       if (!file.exists())
       {
          logger.error("File not found.");
@@ -100,35 +78,27 @@ public class MascDataSource implements DataSource
       long type = query.getDiscriminator();
       if (type == Types.QUERY) 
       {
+         logger.debug("Performing query: {}", query.getPayload());
          result = doQuery(query.getPayload());
       }
       else if (type == Types.LIST)
       {
+         logger.debug("Listing data source.");
          result = list();
       }
       else if (type == Types.GET)
       {
+         logger.debug("Performing get: {}", query.getPayload());
          result = get(query.getPayload());
       }
       else
       {
-         result = DataFactory.error("Unknown query type");
+         String name = DiscriminatorRegistry.get(query.getDiscriminator());
+         logger.warn("Unknown query type: {}", name);
+         result = DataFactory.error("Unknown query type: " + name);
       }
       return result;
       
-   }
-
-   protected Data doQuery(String queryString)
-   {
-      List<String> list = new ArrayList<String>();
-      for (String key : keys)
-      {
-         if (key.contains(queryString))
-         {
-            list.add(key);
-         }
-      }
-      return DataFactory.index(collect(list));
    }
 
    protected long decode(String key)
@@ -144,26 +114,4 @@ public class MascDataSource implements DataSource
       return Types.GRAF;
    }
    
-   /**
-    * Takes a list of String objects and concatenates them into
-    * a single String. Items in the list are separated by a single
-    * space character.
-    * 
-    */
-   private String collect(Collection<String> list)
-   {
-      StringBuilder buffer = new StringBuilder();
-      Iterator<String> it = list.iterator();
-      if (it.hasNext())
-      {
-         buffer.append(it.next());
-      }
-      while (it.hasNext())
-      {
-         buffer.append(' ');
-         buffer.append(it.next());
-      }
-      return buffer.toString();
-   }
-
 }

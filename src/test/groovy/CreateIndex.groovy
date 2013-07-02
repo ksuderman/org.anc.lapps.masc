@@ -1,4 +1,4 @@
-package org.anc.grid.data.masc
+package org.anc.lapps.masc.test
 
 class CreateIndex
 {
