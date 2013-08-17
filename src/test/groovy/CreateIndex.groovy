@@ -1,4 +1,4 @@
-package org.anc.lapps.masc.test
+//package org.anc.lapps.masc.test
 
 class CreateIndex
 {
@@ -15,7 +15,7 @@ class CreateIndex
 
    void run()
    {
-      out = new PrintWriter('src/main/resources/masc3.index')
+      out = new PrintWriter('src/main/resources/full-masc3.index')
       List types = getTypes(header)
       types << 'txt'
       create(types)

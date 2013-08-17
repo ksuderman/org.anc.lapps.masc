@@ -23,10 +23,12 @@
 		</rollingPolicy>
 	</appender>
 
-	<logger name="org.anc" level="info" />
+	<logger name="org.anc" level="debug" />
 	<logger name="org.anc.grid" level="debug" />
 	<root level="warn">
+        <!--
 		<appender-ref ref="FILE" />
+		-->
 		<appender-ref ref="STDOUT"/>
 	</root>
 </configuration>

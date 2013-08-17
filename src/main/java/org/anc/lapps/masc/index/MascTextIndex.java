@@ -4,6 +4,8 @@ import org.anc.index.api.Index;
 import org.anc.index.core.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,11 +13,11 @@ import java.util.List;
  */
 public class MascTextIndex implements Index
 {
-   protected Index index = new IndexImpl();
+   protected Index index;
 
-   public MascTextIndex()
+   public MascTextIndex() throws IOException
    {
-
+      index = new IndexImpl("masc3.index");
    }
 
    public File get(String id)
@@ -33,6 +35,6 @@ public class MascTextIndex implements Index
 
    public List<String> keys()
    {
-      return index.keys();
+      return new ArrayList<String>(index.keys());
    }
 }
