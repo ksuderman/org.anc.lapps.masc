@@ -3,9 +3,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>parent-pom</artifactId>
+        <artifactId>war-parent-pom</artifactId>
         <groupId>org.lappsgrid.maven</groupId>
-        <version>1.0.0</version>
+        <version>1.2.0</version>
     </parent>
     <name>MASC DataSource</name>
     <description>LAPPS DataSource for service MASC files.</description>
@@ -102,14 +102,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.lappsgrid</groupId>
-            <artifactId>service-grid-libs</artifactId>
-            <version>1.1.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.anc</groupId>
             <artifactId>common</artifactId>
-            <version>3.1.1-SNAPSHOT</version>
+            <version>3.1.1</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
@@ -117,12 +112,6 @@
             <groupId>org.anc</groupId>
             <artifactId>index</artifactId>
             <version>1.1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <type>jar</type>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.lappsgrid</groupId>
