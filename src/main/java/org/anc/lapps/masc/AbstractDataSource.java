@@ -80,8 +80,8 @@ public abstract class AbstractDataSource implements DataSource
          return DataFactory.error(savedException.getMessage());
       }
 
-      logger.info("Query type: {}", DiscriminatorRegistry.get(query.getDiscriminator()));
-      logger.info("Query payload: {}", query.getPayload());
+//      logger.debug("Query type: {}", DiscriminatorRegistry.get(query.getDiscriminator()));
+//      logger.debug("Query payload: {}", query.getPayload());
       Data result;
       long type = query.getDiscriminator();
       if (type == Types.QUERY)
@@ -101,21 +101,29 @@ public abstract class AbstractDataSource implements DataSource
       }
       else
       {
-         String name = DiscriminatorRegistry.get(query.getDiscriminator());
-         logger.warn("Unknown query type: {}", name);
+         String name = DiscriminatorRegistry.get(type);
+         logger.warn("Unknown query type: {} ({})", name, type);
          result = DataFactory.error("Unknown query type: " + name);
       }
       return result;
 
    }
 
-   protected long decode(String key)
+   /**
+    * Does some very basic string matching to determine the
+    * discriminator value from the <em>filename</em>.
+    *
+    * @param filename a filename, with or without the path.
+    * @return a discriminator value based on the filename's
+    * extension.
+    */
+   protected long decode(String filename)
    {
-      if (key.endsWith("txt"))
+      if (filename.endsWith("txt"))
       {
          return Types.TEXT;
       }
-      else if (key.endsWith("hdr"))
+      else if (filename.endsWith("hdr"))
       {
          return Types.XML;
       }
@@ -135,19 +143,6 @@ public abstract class AbstractDataSource implements DataSource
       }
       return DataFactory.index(collect(list));
    }
-
-//   protected long decode(String key)
-//   {
-//      if (key.endsWith("txt"))
-//      {
-//         return Types.TEXT;
-//      }
-//      else if (key.endsWith("hdr"))
-//      {
-//         return Types.XML;
-//      }
-//      return Types.GRAF;
-//   }
 
    /**
     * Takes a list of String objects and concatenates them into

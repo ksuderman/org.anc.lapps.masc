@@ -25,7 +25,7 @@
 
 	<logger name="org.anc" level="debug" />
 	<logger name="org.anc.grid" level="debug" />
-	<root level="warn">
+	<root level="debug">
         <!--
 		<appender-ref ref="FILE" />
 		-->

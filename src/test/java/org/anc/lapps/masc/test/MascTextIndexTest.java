@@ -47,6 +47,7 @@ public class MascTextIndexTest
       for (String key : keys)
       {
          File file = index.get(key);
+         System.out.println(key + ": " + file.getPath());
          assertTrue("Wrong file type: " + file.getPath(), file.getName().endsWith(".txt"));
          assertTrue("No file for key: " + key, file != null);
          assertTrue("File not found: " + file.getPath(), file.exists());
