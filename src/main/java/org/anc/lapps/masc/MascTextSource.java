@@ -1,6 +1,6 @@
 package org.anc.lapps.masc;
 
-import org.anc.index.Index;
+import org.anc.index.api.Index;
 import org.anc.lapps.masc.index.MascTextIndex;
 import org.lappsgrid.api.Data;
 import org.lappsgrid.api.DataSource;
