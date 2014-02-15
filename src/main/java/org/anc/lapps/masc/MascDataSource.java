@@ -3,9 +3,8 @@ package org.anc.lapps.masc;
 import org.lappsgrid.api.*;
 
 import org.anc.lapps.masc.index.MascFullIndex;
+import org.anc.lapps.core.AbstractDataSource;
 
-//import javax.jws.WebMethod;
-//import javax.jws.WebService;
 import java.io.IOException;
 
 /**
