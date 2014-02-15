@@ -9,21 +9,16 @@ import java.io.IOException;
 
 /**
  * A @{link org.lappsgrid.api.DataSource DataSource} for accessing all files
- * in the MASC.
+ * in MASC.
  *
  * @author Keith Suderman
  */
 //@WebService
-public class MascDataSource extends AbstractDataSource
+public class MascFileSource extends AbstractDataSource
 {
-   public MascDataSource() throws IOException
+   public MascFileSource() throws IOException
    {
       super(new MascFullIndex());
    }
 
-   //@WebMethod
-   public Data query(Data input)
-   {
-      return super.query(input);
-   }
 }

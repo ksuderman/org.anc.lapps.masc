@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 
-import org.anc.lapps.masc.MascDataSource;
 import org.anc.lapps.masc.MascJsonSource;
 import org.junit.After;
 import org.junit.Before;

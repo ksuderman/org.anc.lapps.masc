@@ -26,7 +26,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:portType name="MascDataSource">
+   <wsdl:portType name="MascFileSource">
 
       <wsdl:operation name="query" parameterOrder="input">
 
@@ -38,7 +38,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:portType>
 
-   <wsdl:binding name="MascDataSourceSoapBinding" type="impl:MascDataSource">
+   <wsdl:binding name="MascDataSourceSoapBinding" type="impl:MascFileSource">
 
       <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
 

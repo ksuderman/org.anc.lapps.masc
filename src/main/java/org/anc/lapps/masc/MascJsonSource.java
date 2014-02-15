@@ -1,6 +1,7 @@
 package org.anc.lapps.masc;
 
-import org.anc.lapps.masc.index.MascFullIndex;
+import org.anc.lapps.core.AbstractDataSource;
+//import org.anc.lapps.masc.index.MascFullIndex;
 import org.anc.lapps.masc.index.MascJsonIndex;
 import org.lappsgrid.api.Data;
 import org.lappsgrid.discriminator.Types;
@@ -16,7 +17,6 @@ public class MascJsonSource extends AbstractDataSource
     public MascJsonSource() throws IOException
     {
         super(new MascJsonIndex());
-        System.out.println("Created a MASC text datasource.");
     }
 
     @Override
@@ -25,7 +25,6 @@ public class MascJsonSource extends AbstractDataSource
      */
     protected Data get(String key)
     {
-        System.out.println("Getting text for " + key);
         Data result = super.get(key);
         if (result.getDiscriminator() != Types.ERROR)
         {
