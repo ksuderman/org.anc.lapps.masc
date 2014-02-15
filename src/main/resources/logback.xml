@@ -24,7 +24,7 @@
 	</appender>
 
 	<logger name="org.anc" level="debug" />
-	<logger name="org.anc.grid" level="debug" />
+	<logger name="org.anc.lapps" level="debug" />
 	<root level="debug">
         <!--
 		<appender-ref ref="FILE" />
