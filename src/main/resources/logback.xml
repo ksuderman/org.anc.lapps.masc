@@ -5,13 +5,13 @@
 		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
 			by default -->
 		<encoder>
-			<pattern>%-5level [%class{0}.%M:%line] %msg%n</pattern>
+			<pattern>%date %-5level [%class{0}.%M:%line] %msg%n</pattern>
 		</encoder>
 	</appender>
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<encoder>
-			<pattern>%-5level [%class{0}.%M:%line] %msg%n</pattern>
+			<pattern>%date %-5level [%class{0}.%M:%line] %msg%n</pattern>
 		</encoder>
 		<append>true</append>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -23,9 +23,9 @@
 		</rollingPolicy>
 	</appender>
 
-	<logger name="org.anc" level="debug" />
-	<logger name="org.anc.lapps" level="debug" />
-	<root level="debug">
+	<logger name="org.anc" level="warn" />
+	<logger name="org.anc.lapps" level="info" />
+	<root level="warn">
         <!--
 		<appender-ref ref="FILE" />
 		-->
