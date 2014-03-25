@@ -7,7 +7,7 @@ import java.io.IOException;
 
 /**
  * A {@link org.lappsgrid.api.DataSource DataSource} that returns
- * header files from the MASC.
+ * header files from MASC.
  *
  * @author Keith Suderman
  *

@@ -1,6 +1,6 @@
 package org.anc.lapps.masc.test;
 
-import org.anc.lapps.masc.MascDataSource;
+import org.anc.lapps.masc.MascFileSource;
 import org.junit.*;
 import org.lappsgrid.api.*;
 import org.lappsgrid.core.DataFactory;
@@ -14,14 +14,14 @@ import static org.junit.Assert.*;
 /**
  * @author Keith Suderman
  */
-public class MascDataSourceTest
+public class MascFileSourceTest
 {
    protected DataSource source;
 
    @Before
    public void before() throws IOException
    {
-      source = new MascDataSource();
+      source = new MascFileSource();
    }
 
    @After
@@ -59,7 +59,7 @@ public class MascDataSourceTest
    @Test
    public void testQuerySpoken() throws IOException
    {
-      System.out.println("MascDataSourceTest.testQuerySpoken");
+      System.out.println("MascFileSourceTest.testQuerySpoken");
       String[] parts = get("spoken");
       assertTrue(parts != null);
       assertTrue(parts.length > 0);
