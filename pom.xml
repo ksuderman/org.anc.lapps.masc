@@ -15,7 +15,7 @@
     <version>1.4.0</version>
     <properties>
         <lapps.version>1.0.1</lapps.version>
-        <lapps.core.version>1.0.2</lapps.core.version>
+        <lapps.core.version>1.1.0</lapps.core.version>
     </properties>
     <build>
         <finalName>MascDataSource#${project.version}</finalName>
@@ -69,7 +69,7 @@
         <dependency>
             <groupId>org.anc.lapps</groupId>
             <artifactId>serialization</artifactId>
-            <version>0.11.0</version>
+            <version>0.12.1</version>
         </dependency>
     </dependencies>
 </project>
