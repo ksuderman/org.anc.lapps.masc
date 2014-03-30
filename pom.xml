@@ -12,29 +12,13 @@
     <groupId>org.anc.lapps.masc</groupId>
     <artifactId>masc-datasource</artifactId>
     <packaging>war</packaging>
-    <version>1.4.0</version>
+    <version>1.4.1</version>
     <properties>
         <lapps.version>1.0.1</lapps.version>
         <lapps.core.version>1.1.0</lapps.core.version>
     </properties>
     <build>
         <finalName>MascDataSource#${project.version}</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.mortbay.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>8.1.11.v20130520</version>
-                <configuration>
-                    <scanIntervalSeconds>10</scanIntervalSeconds>
-                    <connectors>
-                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-                            <port>9090</port>
-                            <maxIdleTime>60000</maxIdleTime>
-                        </connector>
-                    </connectors>
-                </configuration>
-            </plugin>
-        </plugins>
     </build>
     <dependencies>
         <dependency>
