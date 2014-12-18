@@ -1,6 +1,6 @@
 package org.anc.lapps.masc.test;
 
-import org.anc.lapps.masc.MascFileSource;
+import org.anc.lapps.masc.deprecated.MascFileSource;
 import org.junit.*;
 import org.lappsgrid.api.*;
 import org.lappsgrid.core.DataFactory;

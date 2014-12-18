@@ -1,4 +1,4 @@
-package org.anc.lapps.masc;
+package org.anc.lapps.masc.deprecated;
 
 import org.anc.lapps.core.AbstractDataSource;
 import org.anc.lapps.masc.index.MascHeaderIndex;

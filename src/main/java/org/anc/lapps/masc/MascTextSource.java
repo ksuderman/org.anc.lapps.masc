@@ -11,11 +11,11 @@ import java.io.IOException;
  *
  * @author Keith Suderman
  */
-public class MascTextSource extends AbstractDataSource
+public class MascTextSource extends MascAbstractDataSource
 {
    public MascTextSource() throws IOException
    {
-      super(new MascTextIndex());
+   	super(new MascTextIndex(), MascTextSource.class);
    }
 
 }

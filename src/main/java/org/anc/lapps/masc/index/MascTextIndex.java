@@ -20,6 +20,13 @@ public class MascTextIndex implements Index
       index = new IndexImpl("masc3.index");
    }
 
+   @Override
+   public int size()
+   {
+      return index.size();
+   }
+
+   @Override
    public File get(String id)
    {
       File headerFile = index.get(id);
@@ -33,6 +40,7 @@ public class MascTextIndex implements Index
       return new File(parent, name);
    }
 
+   @Override
    public List<String> keys()
    {
       return new ArrayList<String>(index.keys());
