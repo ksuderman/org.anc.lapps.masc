@@ -3,7 +3,7 @@ package org.anc.lapps.masc.deprecated;
 import org.lappsgrid.api.*;
 
 import org.anc.lapps.masc.index.MascFullIndex;
-import org.anc.lapps.core.AbstractDataSource;
+//import org.anc.lapps.core.AbstractDataSource;
 
 import java.io.IOException;
 
@@ -20,11 +20,11 @@ import java.io.IOException;
  *
  * @author Keith Suderman
  */
-public class MascFileSource extends AbstractDataSource
+public class MascFileSource //extends AbstractDataSource
 {
    public MascFileSource() throws IOException
    {
-      super(new MascFullIndex());
+//      super(new MascFullIndex());
    }
 
 }

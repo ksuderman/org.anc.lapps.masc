@@ -19,11 +19,15 @@ public class MascFullIndex implements Index
       index = new IndexImpl("full-masc3.index");
    }
 
+   @Override
+   public int size() { return index.size(); }
+   @Override
    public File get(String key)
    {
       return index.get(key);
    }
 
+   @Override
    public List<String> keys()
    {
       return index.keys();

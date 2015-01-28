@@ -5,9 +5,16 @@ import org.lappsgrid.api.Data;
 import org.lappsgrid.api.DataSource;
 
 import org.junit.*;
+import org.lappsgrid.api.WebService;
+import org.lappsgrid.discriminator.Constants;
 import org.lappsgrid.discriminator.Types;
+import org.lappsgrid.serialization.Serializer;
+import org.lappsgrid.serialization.datasource.Get;
+import org.lappsgrid.serialization.datasource.List;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -16,7 +23,7 @@ import static org.junit.Assert.*;
  */
 public class MascTextSourceTest
 {
-   private DataSource source;
+   private WebService source;
 
    public MascTextSourceTest()
    {
@@ -38,21 +45,31 @@ public class MascTextSourceTest
    @Test
    public void testList()
    {
-      Data query = new Data(Types.LIST);
-      Data result = source.query(query);
-      assertTrue("Result is null", result != null);
-      assertTrue(result.getPayload(), result.getDiscriminator() != Types.ERROR);
-//      System.out.println(result.getPayload());
+      System.out.println("MascTextSourceTest.testList");
+      String listCommand = Serializer.toJson(new List());
+      String response = source.execute(listCommand);
+      Map<String,Object> data = Serializer.parse(response, HashMap.class);
+      Object discriminator = data.get("discriminator");
+      assertNotNull("No discriminator returned.", discriminator);
+      assertEquals("Wrong discriminator returned", Constants.Uri.OK, discriminator);
+      java.util.List<String> payload = (java.util.List<String>) data.get("payload");
+      assertNotNull("No payload returned.", payload);
+      assertTrue(payload.size() > 0);
    }
 
    @Test
    public void testGet()
    {
-      Data query = new Data(Types.GET, "MASC3-0202");
-      Data result = source.query(query);
-      assertTrue("Result is null", result != null);
-      assertTrue(result.getPayload(), result.getDiscriminator() != Types.ERROR);
-      assertTrue("Datasource did not return a text document.", result.getDiscriminator() == Types.TEXT);
-      System.out.println(result.getPayload());
+      System.out.println("MascTextSourceTest.testGet");
+      String getCommand = Serializer.toJson(new Get(null, "MASC3-0290"));
+      String response = source.execute(getCommand);
+      Map<String,Object> map = Serializer.parse(response, HashMap.class);
+      Object discriminator = map.get("discriminator");
+      assertNotNull("No discriminator returned.");
+      assertEquals("Wrong discriminator type returned.", Constants.Uri.OK, discriminator);
+      Object payload = map.get("payload");
+      assertNotNull("No payload returned.", payload);
+      assertTrue(payload instanceof String);
+      System.out.println(payload);
    }
 }

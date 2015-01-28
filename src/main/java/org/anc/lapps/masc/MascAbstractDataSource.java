@@ -6,6 +6,7 @@ package org.anc.lapps.masc;
 
 import org.anc.index.api.Index;
 import org.anc.io.UTF8Reader;
+import org.lappsgrid.api.WebService;
 import org.lappsgrid.discriminator.Constants;
 import org.lappsgrid.serialization.*;
 import org.lappsgrid.serialization.Error;
@@ -17,7 +18,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class MascAbstractDataSource 
+public abstract class MascAbstractDataSource implements WebService
 {
 	private final Logger logger; // = LoggerFactory.getLogger(MascAbstractDataSource.class);
 	protected Index index;
