@@ -47,7 +47,7 @@ public class MascJsonSourceTest
       Map<String,Object> data = Serializer.parse(response, HashMap.class);
       Object discriminator = data.get("discriminator");
       assertNotNull("No discriminator returned.", discriminator);
-      assertEquals("Wrong discriminator returned", Constants.Uri.OK, discriminator);
+      assertEquals("Wrong discriminator returned", Constants.Uri.STRING_LIST, discriminator);
       java.util.List<String> payload = (java.util.List<String>) data.get("payload");
       assertNotNull("No payload returned.", payload);
       assertTrue(payload.size() > 0);
@@ -69,7 +69,7 @@ public class MascJsonSourceTest
       Map<String,Object> map = Serializer.parse(response, HashMap.class);
       Object discriminator = map.get("discriminator");
       assertNotNull("No discriminator returned.");
-      assertEquals("Wrong discriminator type returned.", Constants.Uri.OK, discriminator);
+      assertEquals("Wrong discriminator type returned.", Constants.Uri.JSON_LD, discriminator);
       Object payload = map.get("payload");
       assertNotNull("No payload returned.", payload);
       assertTrue(payload instanceof String);

@@ -1,6 +1,7 @@
 package org.anc.lapps.masc;
 
 import org.anc.lapps.masc.index.MascJsonIndex;
+import org.lappsgrid.discriminator.Discriminators;
 import org.lappsgrid.experimental.annotations.DataSourceMetadata;
 
 import java.io.IOException;
@@ -24,6 +25,6 @@ public class MascJsonSource extends MascAbstractDataSource
 
    public MascJsonSource() throws IOException
    {
-      super(new MascJsonIndex(), MascJsonSource.class);
+      super(new MascJsonIndex(), MascJsonSource.class, Discriminators.Uri.JSON_LD);
    }
 }

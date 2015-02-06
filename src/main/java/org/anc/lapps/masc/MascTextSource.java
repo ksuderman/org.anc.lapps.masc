@@ -1,7 +1,7 @@
 package org.anc.lapps.masc;
 
-//import org.anc.lapps.core.AbstractDataSource;
 import org.anc.lapps.masc.index.MascTextIndex;
+import org.lappsgrid.discriminator.Discriminators;
 import org.lappsgrid.experimental.annotations.DataSourceMetadata;
 
 import java.io.IOException;
@@ -25,7 +25,7 @@ public class MascTextSource extends MascAbstractDataSource
 {
    public MascTextSource() throws IOException
    {
-   	super(new MascTextIndex(), MascTextSource.class);
+   	super(new MascTextIndex(), MascTextSource.class, Discriminators.Uri.TEXT);
    }
 
 }

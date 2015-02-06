@@ -1,58 +1,70 @@
 package org.anc.lapps.masc;
 
-/**
- * @author Keith Suderman
- */
-
 import org.anc.index.api.Index;
 import org.anc.io.UTF8Reader;
-import org.lappsgrid.api.WebService;
-import org.lappsgrid.discriminator.Constants;
-import org.lappsgrid.serialization.*;
+import org.lappsgrid.api.DataSource;
+import org.lappsgrid.serialization.Data;
 import org.lappsgrid.serialization.Error;
+import org.lappsgrid.serialization.Serializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class MascAbstractDataSource implements WebService
+import static org.lappsgrid.discriminator.Discriminators.Uri;
+
+
+/**
+ * @author Keith Suderman
+ */
+public abstract class MascAbstractDataSource implements DataSource
 {
 	private final Logger logger; // = LoggerFactory.getLogger(MascAbstractDataSource.class);
 	protected Index index;
 
+	/** Metadata for the service is cached in this field so it does not need to be read for disk every request. */
 	protected String metadata;
+	/** The type of data returned by this service. */
+	protected String returnType;
+	/** The number of documents managed by this data source. */
 	protected final int size;
 
-	public MascAbstractDataSource(Index index, Class<? extends MascAbstractDataSource> dsClass)
+	public MascAbstractDataSource(Index index, Class<? extends MascAbstractDataSource> dsClass, String returnType)
 	{
 		this.index = index;
+		this.returnType = returnType;
 		this.logger = LoggerFactory.getLogger(dsClass);
 		this.size = index.keys().size();
-		this.metadata = loadMetadata("/metadata/" + dsClass.getName() + ".json");
+		this.metadata = loadMetadata("metadata/" + dsClass.getName() + ".json");
 	}
 
 	public String execute(String input)
 	{
+		logger.debug("Executing request: {}", input);
 		Map<String,Object> map = Serializer.parse(input, HashMap.class);
 		String discriminator = (String) map.get("discriminator");
 		if (discriminator == null)
 		{
+			logger.error("No discriminator present in request.");
 			return Serializer.toJson(new org.lappsgrid.serialization.Error("No discriminator value provided."));
 		}
 
 		String result = null;
 		switch (discriminator)
 		{
-			case Constants.Uri.SIZE:
+			case Uri.SIZE:
+				logger.debug("Fetching size");
 				Data<Integer> sizeData = new Data<Integer>();
-				sizeData.setDiscriminator(Constants.Uri.OK);
+				sizeData.setDiscriminator(Uri.OK);
 				sizeData.setPayload(size);
 				result = Serializer.toJson(sizeData);
 				break;
-			case Constants.Uri.LIST:
+			case Uri.LIST:
+				logger.debug("Fetching list");
 				java.util.List<String> keys = index.keys();
 				Object startValue = map.get("start");
 				if (startValue != null)
@@ -67,11 +79,12 @@ public abstract class MascAbstractDataSource implements WebService
 					keys = keys.subList(start, end);
 				}
 				Data<java.util.List<String>> listData = new Data<>();
-				listData.setDiscriminator(Constants.Uri.OK);
+				listData.setDiscriminator(Uri.STRING_LIST);
 				listData.setPayload(keys);
 				result = Serializer.toJson(listData);
 				break;
-			case Constants.Uri.GET:
+			case Uri.GET:
+				logger.debug("Fetching document");
 				String key = map.get("payload").toString();
 				if (key == null)
 				{
@@ -94,7 +107,7 @@ public abstract class MascAbstractDataSource implements WebService
 							String content = reader.readString();
 							reader.close();
 							Data<String> stringData = new Data<String>();
-							stringData.setDiscriminator(Constants.Uri.OK);
+							stringData.setDiscriminator(returnType);
 							stringData.setPayload(content);
 							result = Serializer.toJson(stringData);
 						}
@@ -105,31 +118,32 @@ public abstract class MascAbstractDataSource implements WebService
 
 				}
 				break;
-			case Constants.Uri.GETMETADATA:
-				Data<String> data = new Data<String>();
-				data.setDiscriminator(Constants.Uri.OK);
-				data.setPayload(metadata);
-				result = Serializer.toJson(data);
+			case Uri.GETMETADATA:
+				logger.warn("Deprecated discriminator GETMETADATA used.");
+				result = metadata;
 				break;
 			default:
+				logger.warn("Invalid discriminator: {}", discriminator);
 				result = error("Invalid discriminator: " + discriminator);
 				break;
 		}
+		logger.debug("Returning result {}", result);
 		return result;
+	}
+
+	public String getMetadata()
+	{
+		return metadata;
 	}
 
 	protected String loadMetadata(String metadataPath)
 	{
-		ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		if (loader == null)
-		{
-			loader = this.getClass().getClassLoader();
-		}
+		ClassLoader loader = this.getClass().getClassLoader();
 //		System.out.println("Attempting to load metadata from " + metadataPath);
 		InputStream inputStream = loader.getResourceAsStream(metadataPath);
 		if (inputStream == null)
 		{
-			return error("Unable to locate metadata.");
+			return error("Unable to locate metadata at: " + metadataPath);
 		}
 
 		String result;
@@ -139,7 +153,7 @@ public abstract class MascAbstractDataSource implements WebService
 			String json = reader.readString();
 			reader.close();
 			Data<String> data = new Data<String>();
-			data.setDiscriminator(Constants.Uri.OK);
+			data.setDiscriminator(Uri.META);
 			data.setPayload(json);
 			result = Serializer.toJson(data);
 		}
