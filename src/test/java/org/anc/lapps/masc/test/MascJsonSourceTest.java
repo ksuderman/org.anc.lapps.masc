@@ -3,16 +3,19 @@ package org.anc.lapps.masc.test;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.anc.lapps.masc.MascJsonSource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.lappsgrid.api.Data;
-import org.lappsgrid.api.DataSource;
 import org.lappsgrid.core.DataFactory;
-import org.lappsgrid.discriminator.DiscriminatorRegistry;
-import org.lappsgrid.discriminator.Types;
+import org.lappsgrid.api.DataSource;
+import org.lappsgrid.serialization.Serializer;
+
+import static org.lappsgrid.discriminator.Discriminators.Uri;
 
 public class MascJsonSourceTest
 {
@@ -34,26 +37,31 @@ public class MascJsonSourceTest
    @Test
    public void testList()
    {
-      Data data = source.query(DataFactory.list());
-      assertTrue(data.getPayload(), data.getDiscriminator() != Types.ERROR);
-      String type = DiscriminatorRegistry.get(data.getDiscriminator());
-      System.out.println("Type is " + type);
-      System.out.println("Payload: " + data.getPayload());
-      String[] parts = data.getPayload().split("\\s+");
-      assertTrue("Invalid payload", parts.length > 0);
-//      System.out.println("Array size: " + parts.length );
+      System.out.println("MascJsonSourceTest.testList");
+      String listCommand = DataFactory.list();
+      String response = source.execute(listCommand);
+      Map<String,Object> data = Serializer.parse(response, Map.class);
+      Object discriminator = data.get("discriminator");
+      assertNotNull("No discriminator returned.", discriminator);
+      assertEquals("Wrong discriminator returned", Uri.STRING_LIST, discriminator);
+      List<String> payload = (List<String>) data.get("payload");
+      assertNotNull("No payload returned.", payload);
+      assertTrue(payload.size() > 0);
    }
 
    @Test
    public void testGet()
    {
-      Data data = source.query(DataFactory.get("MASC3-0290"));
-      assertTrue(data.getPayload(), data.getDiscriminator() != Types.ERROR);
-      String name = DiscriminatorRegistry.get(data.getDiscriminator());
-      System.out.println("Type is " + name);
-      String payload = data.getPayload();
-      assertTrue("Null payload.", payload != null);
-      assertTrue("Empty payload", payload.length() != 0);
-//      System.out.println("Payload " + data.getPayload());
+      System.out.println("MascJsonSourceTest.testGet");
+      String getCommand = DataFactory.get("MASC3-0290");
+      String response = source.execute(getCommand);
+      Map<String,Object> map = Serializer.parse(response, HashMap.class);
+      Object discriminator = map.get("discriminator");
+      assertNotNull("No discriminator returned.", discriminator);
+      assertEquals("Wrong discriminator type returned.", Uri.JSON_LD, discriminator);
+      Object payload = map.get("payload");
+      assertNotNull("No payload returned.", payload);
+      assertTrue(payload instanceof String);
+      System.out.println(payload);
    }
 }

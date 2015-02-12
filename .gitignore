@@ -13,3 +13,6 @@ target
 .settings
 .idea
 *.iml
+
+VERSION
+src/main/java/org/anc/lapps/masc/Version.java

@@ -20,11 +20,19 @@ public class MascJsonIndex implements Index
         index = new IndexImpl("masc3-json.index");
     }
 
+    @Override
+    public int size()
+    {
+        return index.size();
+    }
+
+    @Override
     public File get(String id)
     {
         return index.get(id);
     }
 
+    @Override
     public List<String> keys()
     {
         return new ArrayList<String>(index.keys());

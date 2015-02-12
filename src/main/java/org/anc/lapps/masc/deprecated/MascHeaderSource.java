@@ -1,6 +1,6 @@
-package org.anc.lapps.masc;
+package org.anc.lapps.masc.deprecated;
 
-import org.anc.lapps.core.AbstractDataSource;
+//import org.anc.lapps.core.AbstractDataSource;
 import org.anc.lapps.masc.index.MascHeaderIndex;
 
 import java.io.IOException;
@@ -12,10 +12,10 @@ import java.io.IOException;
  * @author Keith Suderman
  *
  */
-public class MascHeaderSource extends AbstractDataSource
+public class MascHeaderSource //extends AbstractDataSource
 {
    public MascHeaderSource() throws IOException
    {
-      super(new MascHeaderIndex());
+//      super(new MascHeaderIndex());
    }
 }
