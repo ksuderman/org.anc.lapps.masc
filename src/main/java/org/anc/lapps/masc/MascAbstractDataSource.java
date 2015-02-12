@@ -6,6 +6,8 @@ import org.lappsgrid.api.DataSource;
 import org.lappsgrid.serialization.Data;
 import org.lappsgrid.serialization.Error;
 import org.lappsgrid.serialization.Serializer;
+import static org.lappsgrid.discriminator.Discriminators.Uri;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.lappsgrid.discriminator.Discriminators.Uri;
@@ -65,17 +68,29 @@ public abstract class MascAbstractDataSource implements DataSource
 				break;
 			case Uri.LIST:
 				logger.debug("Fetching list");
-				java.util.List<String> keys = index.keys();
-				Object startValue = map.get("start");
+				List<String> keys = index.keys();
+				Map payload = (Map) map.get("payload");
+				System.out.println("Payload is " + payload.getClass().getName());
+				//System.out.println(payload.toString());
+				//Map<String,Object> offsets = Serializer.parse(payload.toString(), Map.class);
+				Object startValue = payload.get("start");
 				if (startValue != null)
 				{
-					int start = Integer.parseInt(startValue.toString());
+					int start = 0;
+					int offset = Integer.parseInt(startValue.toString());
+					if (offset >= 0) {
+						start = offset;
+					}
 					int end = index.keys().size();
-					Object endValue = map.get("end");
+					Object endValue = payload.get("end");
 					if (endValue != null)
 					{
-						end = Integer.parseInt(endValue.toString());
+						offset = Integer.parseInt(endValue.toString());
+						if (offset >= start) {
+							end = offset;
+						}
 					}
+					logger.debug("Returning sublist {}-{}", start, end);
 					keys = keys.subList(start, end);
 				}
 				Data<java.util.List<String>> listData = new Data<>();
@@ -103,6 +118,7 @@ public abstract class MascAbstractDataSource implements DataSource
 					}
 					else try
 						{
+							logger.debug("Loading text from file {}", file.getPath());
 							UTF8Reader reader = new UTF8Reader(file);
 							String content = reader.readString();
 							reader.close();
@@ -123,11 +139,12 @@ public abstract class MascAbstractDataSource implements DataSource
 				result = metadata;
 				break;
 			default:
-				logger.warn("Invalid discriminator: {}", discriminator);
-				result = error("Invalid discriminator: " + discriminator);
+				String message = String.format("Invalid discriminator: %s, Uri.List is %s", discriminator, Uri.LIST);
+				logger.warn(message);
+				result = error(message);
 				break;
 		}
-		logger.debug("Returning result {}", result);
+		logger.trace("Returning result {}", result);
 		return result;
 	}
 

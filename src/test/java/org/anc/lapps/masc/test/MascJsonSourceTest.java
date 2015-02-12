@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.anc.lapps.masc.MascJsonSource;
@@ -39,11 +40,11 @@ public class MascJsonSourceTest
       System.out.println("MascJsonSourceTest.testList");
       String listCommand = DataFactory.list();
       String response = source.execute(listCommand);
-      Map<String,Object> data = Serializer.parse(response, HashMap.class);
+      Map<String,Object> data = Serializer.parse(response, Map.class);
       Object discriminator = data.get("discriminator");
       assertNotNull("No discriminator returned.", discriminator);
       assertEquals("Wrong discriminator returned", Uri.STRING_LIST, discriminator);
-      java.util.List<String> payload = (java.util.List<String>) data.get("payload");
+      List<String> payload = (List<String>) data.get("payload");
       assertNotNull("No payload returned.", payload);
       assertTrue(payload.size() > 0);
    }

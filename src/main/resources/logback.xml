@@ -25,6 +25,7 @@
     
 	<logger name="org.anc" level="warn" />
 	<logger name="org.anc.lapps" level="warn" />
+    <logger name="org.anc.lapps.masc" level="warn" />
 	<root level="warn">
         <!--
 		<appender-ref ref="FILE" />
