@@ -1,5 +1,6 @@
 package org.anc.lapps.masc.test;
 
+import org.anc.lapps.masc.MascAbstractDataSource;
 import org.anc.lapps.masc.MascTextSource;
 import org.lappsgrid.api.DataSource;
 
@@ -29,6 +30,7 @@ public class MascTextSourceTest
    @Before
    public void setup() throws IOException
    {
+		MascAbstractDataSource.testing = true;
       source = new MascTextSource();
    }
 

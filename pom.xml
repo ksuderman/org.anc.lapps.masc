@@ -8,6 +8,16 @@
         <groupId>org.lappsgrid.maven</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.1.10.RELEASE</version>
+    </parent>
+    <parent>
+        <groupId>org.anc.maven</groupId>
+        <artifactId>parent-pom</artifactId>
+        <version>2.5.2</version>
+    </parent>
     -->
     <parent>
         <artifactId>war-parent-pom</artifactId>
@@ -18,12 +28,12 @@
     <description>LAPPS DataSource for service MASC files.</description>
     <groupId>org.anc.lapps.masc</groupId>
     <artifactId>datasource</artifactId>
-    <packaging>war</packaging>
     <version>2.0.0-SNAPSHOT</version>
+    <packaging>war</packaging>
     <properties>
         <lapps.api.version>2.0.0</lapps.api.version>
         <lapps.core.version>2.0.0-SNAPSHOT</lapps.core.version>
-        <lapps.discriminator.version>2.0.0</lapps.discriminator.version>
+        <lapps.discriminator.version>2.0.1</lapps.discriminator.version>
         <lapps.serialization.version>2.0.0-SNAPSHOT</lapps.serialization.version>
         <lapps.annotations.version>1.0.0</lapps.annotations.version>
         <anc.index.version>1.2.0</anc.index.version>
@@ -35,12 +45,45 @@
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <!--
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-eclipse-compiler</artifactId>
+                        <version>2.8.0-01</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-eclipse-batch</artifactId>
+                        <version>2.1.8-01</version>
+                    </dependency>
+                </dependencies>
+                -->
                 <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                    <!--
                     <annotationProcessors>
                         <annotationProcessor>org.lappsgrid.experimental.annotation.processing.MetadataProcessor</annotationProcessor>
                     </annotationProcessors>
+                    <compilerId>groovy-eclipse-compiler</compilerId>
+                    <verbose>true</verbose>
+
+                    -->
                 </configuration>
             </plugin>
+            <!--
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-eclipse-compiler</artifactId>
+                <version>2.8.0-01</version>
+                <extensions>true</extensions>
+            </plugin>
+            -->
             <plugin>
                 <groupId>org.anc.maven.plugins</groupId>
                 <artifactId>anc-maven-plugin</artifactId>
@@ -59,6 +102,12 @@
                     </execution>
                 </executions>
             </plugin>
+            <!--
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>8.1.11.v20130520</version>
+            </plugin>
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
                 <configuration>
@@ -69,31 +118,44 @@
                     </filesets>
                 </configuration>
             </plugin>
+            -->
+            <!--
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>2.9</version>
             </plugin>
-            <plugin>
-                <groupId>org.mortbay.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>8.1.11.v20130520</version>
-            </plugin>
+            -->
         </plugins>
     </build>
     <dependencies>
         <!--
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.anc.lapps.oauth</groupId>
+            <artifactId>database</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
         </dependency>
         -->
         <dependency>
-            <!-- Groovy is used for some code in the test directory. -->
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.3.176</version>
+        </dependency>
+        <!--
+        <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
             <version>2.2.0</version>
             <scope>test</scope>
         </dependency>
+        -->
         <dependency>
             <groupId>org.anc</groupId>
             <artifactId>index</artifactId>
@@ -125,6 +187,92 @@
             <groupId>org.lappsgrid.experimental</groupId>
             <artifactId>annotations</artifactId>
             <version>${lapps.annotations.version}</version>
+        </dependency>
+        <!--
+        <dependency>
+            <groupId>net.servicegrid</groupId>
+            <artifactId>jp.go.nict.langrid.client</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>net.servicegrid</groupId>
+            <artifactId>jp.go.nict.langrid.client.soap</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>net.servicegrid</groupId>
+            <artifactId>
+                jp.go.nict.langrid.servicecontainer
+            </artifactId>
+            <version>1.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>net.servicegrid</groupId>
+            <artifactId>
+                jp.go.nict.langrid.servicecontainer.handler.axis
+            </artifactId>
+            <version>1.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-webapp</artifactId>
+            <version>9.3.0.M1</version>
+        </dependency>
+        <dependency>
+            <groupId>net.servicegrid</groupId>
+            <artifactId>jp.go.nict.langrid.commons</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-discovery</groupId>
+            <artifactId>commons-discovery</artifactId>
+            <version>0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.axis</groupId>
+            <artifactId>axis-jaxrpc</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.axis</groupId>
+            <artifactId>axis-saaj</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>axis</groupId>
+            <artifactId>axis-wsdl4j</artifactId>
+            <version>1.5.1</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
+        </dependency>
+        -->
+        <dependency>
+            <groupId>org.apache.axis</groupId>
+            <artifactId>axis</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.axis</groupId>
+            <artifactId>axis-jaxrpc</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.axis</groupId>
+            <artifactId>axis-saaj</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>axis</groupId>
+            <artifactId>axis-wsdl4j</artifactId>
+            <version>1.5.1</version>
         </dependency>
     </dependencies>
 </project>
