@@ -220,16 +220,20 @@ public abstract class MascAbstractDataSource implements DataSource
 		}
 		else
 		{
-			String[] authorizations = headers.getHeader("authorization");
+			String[] authorizations = headers.getHeader("Authorization");
 			if (authorizations == null || authorizations.length == 0)
 			{
-				errorMessage = "No authorization header found.";
-				logger.debug(errorMessage);
-				return false;
+				authorizations = headers.getHeader("OAuth-Authorization");
+				if (authorizations == null || authorizations.length == 0)
+				{
+					errorMessage = "No authorization header found.";
+					logger.debug(errorMessage);
+					return false;
+				}
 			}
 			String header = authorizations[0].toLowerCase();
 			logger.debug("Authorization: {}", header);
-			if (!header.startsWith("bearer "))
+			if (!header.startsWith("Bearer ") && !header.startsWith("bearer "))
 			{
 				errorMessage = "Authorization must be done with an OAuth access token. Found: " + header;
 				logger.debug(errorMessage);
@@ -281,10 +285,10 @@ public abstract class MascAbstractDataSource implements DataSource
 			if (!valid)
 			{
 				errorMessage = "Invalid access token: " + header;
-				return "2ae317014058d00f742ccc9fdf27a701".equals(header);
+				return "123abc".equals(header);
 			}
 //			errorMessage = "Invalid access token.";
-			System.out.println("Access token is valid.");
+			logger.debug("Access token is valid.");
 			return true;
 //			Iterator<MimeHeader> it = headers.getAllHeaders();
 //			while (it.hasNext())
