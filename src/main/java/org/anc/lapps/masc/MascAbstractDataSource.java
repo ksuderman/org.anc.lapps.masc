@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,7 @@ import jp.go.nict.langrid.commons.ws.ServiceContext;
 import jp.go.nict.langrid.servicecontainer.handler.RIProcessor;
 //import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.xml.soap.MimeHeader;
 import javax.xml.soap.MimeHeaders;
 
 
@@ -37,11 +39,14 @@ public abstract class MascAbstractDataSource implements DataSource
 	static {
 		try
 		{
+			// Force load the database driver.
 			Class.forName("org.h2.Driver");
 		}
 		catch (ClassNotFoundException e)
 		{
-			// Ignore.
+			// Ignore.  This is not an elegant place for the application
+			// to fail.  We will let the first database access blow up
+			// instead.
 			e.printStackTrace();
 		}
 	}
@@ -220,28 +225,26 @@ public abstract class MascAbstractDataSource implements DataSource
 		}
 		else
 		{
-			String[] authorizations = headers.getHeader("Authorization");
-			if (authorizations == null || authorizations.length == 0)
+			Iterator<MimeHeader> iterator = headers.getAllHeaders();
+			logger.debug("MIME Headers:");
+			while (iterator.hasNext())
 			{
-				authorizations = headers.getHeader("OAuth-Authorization");
-				if (authorizations == null || authorizations.length == 0)
-				{
-					errorMessage = "No authorization header found.";
-					logger.debug(errorMessage);
-					return false;
-				}
+				MimeHeader header = iterator.next();
+				logger.debug("{} = {}", header.getName(), header.getValue());
 			}
-			String header = authorizations[0].toLowerCase();
-			logger.debug("Authorization: {}", header);
-			if (!header.startsWith("Bearer ") && !header.startsWith("bearer "))
+
+			String token = getToken(headers); // header.substring(7);
+			if (token == null)
 			{
-				errorMessage = "Authorization must be done with an OAuth access token. Found: " + header;
+				errorMessage = "No Authorization header found.";
 				logger.debug(errorMessage);
 				return false;
 			}
-			header = header.substring(7);
-			Object token = null;
+
+			// Now try to find the token in the database.  If the token is not
+			// in the database it has not been issued by us.
 			Connection connection = null;
+			Statement statement = null;
 			boolean valid = false;
 			try
 			{
@@ -249,15 +252,10 @@ public abstract class MascAbstractDataSource implements DataSource
 				String username = "lappsoauth";
 				String password = "xkcdC@rt00Nz";
 				connection = DriverManager.getConnection(url, username, password);
-				Statement statement = connection.createStatement();
-				ResultSet result = statement.executeQuery("select * from Token t where t.token='" + header + "'");
+				statement = connection.createStatement();
+				ResultSet result = statement.executeQuery("select * from Token t where t.token='" + token + "'");
 				ResultSetMetaData metaData = result.getMetaData();
 				int count = metaData.getColumnCount();
-				logger.debug("Result set contains {} columns", count);
-				for (int i = 1; i <= count; ++i)
-				{
-					logger.debug("Column: Name {} Label {}", metaData.getColumnName(i), metaData.getColumnLabel(i));
-				}
 
 				while (result.next())
 				{
@@ -266,36 +264,38 @@ public abstract class MascAbstractDataSource implements DataSource
 					String access = result.getString("TOKEN");
 					String clientId = result.getString("CLIENT_ID");
 					logger.debug("Token from database: {} {}", clientId, access);
-					System.out.println("Token id   : " + id);
-					System.out.println("Acess token: " + access);
-					System.out.println("Client ID  : " + clientId);
+//					System.out.println("Token id   : " + id);
+//					System.out.println("Acess token: " + access);
+//					System.out.println("Client ID  : " + clientId);
 				}
-				statement.close();
-				connection.close();
 			}
 			catch (SQLException e)
 			{
 				logger.error("Unable to access the database.", e);
 				e.printStackTrace();
 			}
+			finally
+			{
+				if (statement != null) try {
+					statement.close();
+				}
+				catch (SQLException ignored) { }
+				if (connection != null) try
+				{
+					connection.close();
+				}
+				catch (SQLException ignored) { }
+			}
 
 
-//			Token token = null;
-//			token = tokenDatabase.findByToken(header);
 			if (!valid)
 			{
-				errorMessage = "Invalid access token: " + header;
-				return "123abc".equals(header);
+				errorMessage = "Invalid access token: " + token;
+				//TODO this should return false. This is for testing only.
+				return "123abc".equals(token);
 			}
-//			errorMessage = "Invalid access token.";
 			logger.debug("Access token is valid.");
 			return true;
-//			Iterator<MimeHeader> it = headers.getAllHeaders();
-//			while (it.hasNext())
-//			{
-//				MimeHeader header = it.next();
-//				logger.debug(header.getName() + " = " + header.getValue());
-//			}
 		}
 
 		// rpc header access
@@ -319,6 +319,42 @@ public abstract class MascAbstractDataSource implements DataSource
 	public String getMetadata()
 	{
 		return metadata;
+	}
+
+	protected String getToken(MimeHeaders headers)
+	{
+		String[] authorizations = headers.getHeader("Authorization");
+		String token = checkAuthorizations(authorizations);
+		if (token != null)
+		{
+			return token;
+		}
+
+		authorizations = headers.getHeader("X-Langrid-Service-Authorization");
+		token = checkAuthorizations(authorizations);
+		if (token != null)
+		{
+			return token;
+		}
+		logger.info("Unable to find an authorization header.");
+		return null;
+	}
+
+	protected String checkAuthorizations(String[] authorizations)
+	{
+		if (authorizations == null || authorizations.length == 0)
+		{
+			return null;
+		}
+		for (String authorization : authorizations)
+		{
+			logger.debug("Checking authorization token: {}", authorization);
+			if (authorization.startsWith("Bearer") || authorization.startsWith("bearer"))
+			{
+				return authorization.substring(7);
+			}
+		}
+		return null;
 	}
 
 	protected String loadMetadata(String metadataPath)
