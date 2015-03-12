@@ -28,6 +28,15 @@
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessors>
+                        <annotationProcessor>org.lappsgrid.experimental.annotation.processing.MetadataProcessor</annotationProcessor>
+                    </annotationProcessors>
+                </configuration>
+            </plugin>
+            <!--
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
                 <dependencies>
                     <dependency>
                         <groupId>org.codehaus.groovy</groupId>
@@ -50,7 +59,7 @@
                     <verbose>true</verbose>
                 </configuration>
             </plugin>
-            <!--
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -111,34 +120,11 @@
         </plugins>
     </build>
     <dependencies>
-        <!--
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.anc.lapps.oauth</groupId>
-            <artifactId>database</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
-        </dependency>
-        -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>1.3.176</version>
         </dependency>
-        <!--
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>2.2.0</version>
-            <scope>test</scope>
-        </dependency>
-        -->
         <dependency>
             <groupId>org.anc</groupId>
             <artifactId>index</artifactId>
@@ -171,72 +157,12 @@
             <artifactId>annotations</artifactId>
             <version>${lapps.annotations.version}</version>
         </dependency>
-        <!--
         <dependency>
-            <groupId>net.servicegrid</groupId>
-            <artifactId>jp.go.nict.langrid.client</artifactId>
-            <version>1.0.2</version>
+            <groupId>org.anc.json</groupId>
+            <artifactId>validator</artifactId>
+            <version>1.0.1</version>
+            <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>net.servicegrid</groupId>
-            <artifactId>jp.go.nict.langrid.client.soap</artifactId>
-            <version>1.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>net.servicegrid</groupId>
-            <artifactId>
-                jp.go.nict.langrid.servicecontainer
-            </artifactId>
-            <version>1.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>net.servicegrid</groupId>
-            <artifactId>
-                jp.go.nict.langrid.servicecontainer.handler.axis
-            </artifactId>
-            <version>1.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-webapp</artifactId>
-            <version>9.3.0.M1</version>
-        </dependency>
-        <dependency>
-            <groupId>net.servicegrid</groupId>
-            <artifactId>jp.go.nict.langrid.commons</artifactId>
-            <version>1.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.1.3</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-discovery</groupId>
-            <artifactId>commons-discovery</artifactId>
-            <version>0.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.axis</groupId>
-            <artifactId>axis-jaxrpc</artifactId>
-            <version>1.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.axis</groupId>
-            <artifactId>axis-saaj</artifactId>
-            <version>1.4</version>
-        </dependency>
-        <dependency>
-            <groupId>axis</groupId>
-            <artifactId>axis-wsdl4j</artifactId>
-            <version>1.5.1</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-            <version>1.4.7</version>
-        </dependency>
-        -->
         <dependency>
             <groupId>org.apache.axis</groupId>
             <artifactId>axis</artifactId>

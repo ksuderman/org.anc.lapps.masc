@@ -118,6 +118,10 @@ public abstract class MascAbstractDataSource implements DataSource
 				logger.debug("Fetching list");
 				List<String> keys = index.keys();
 				Map payload = (Map) map.get("payload");
+				if (payload == null)
+				{
+					payload = new HashMap<String,String>();
+				}
 				System.out.println("Payload is " + payload.getClass().getName());
 				//System.out.println(payload.toString());
 				//Map<String,Object> offsets = Serializer.parse(payload.toString(), Map.class);
