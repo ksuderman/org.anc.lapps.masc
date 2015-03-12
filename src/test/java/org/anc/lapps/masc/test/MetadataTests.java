@@ -55,15 +55,7 @@ public class MetadataTests
 		assertEquals(data.getDiscriminator(), Uri.META);
 		json = data.getPayload();
 
-		ProcessingReport report = validator.validate(json);
-		if (!report.isSuccess())
-		{
-			for (ProcessingMessage message : report)
-			{
-				System.out.println(message.getMessage());
-				fail("Validationg failed.");
-			}
-		}
+		validate(json);
 
 		DataSourceMetadata metadata = Serializer.parse(json, DataSourceMetadata.class);
 		assertEquals(Version.getVersion(), metadata.getVersion());
@@ -78,19 +70,23 @@ public class MetadataTests
 		Data<String> data = Serializer.parse(json, Data.class);
 		assertEquals(data.getDiscriminator(), Uri.META);
 		json = data.getPayload();
+		validate(json);
 
+		DataSourceMetadata metadata = Serializer.parse(json, DataSourceMetadata.class);
+		assertEquals(Version.getVersion(), metadata.getVersion());
+		assertEquals(MascTextSource.class.getCanonicalName(), metadata.getName());
+	}
+
+	private void validate(String json)
+	{
 		ProcessingReport report = validator.validate(json);
 		if (!report.isSuccess())
 		{
 			for (ProcessingMessage message : report)
 			{
 				System.out.println(message.getMessage());
-				fail("Validationg failed.");
 			}
+			fail("Validation failed.");
 		}
-
-		DataSourceMetadata metadata = Serializer.parse(json, DataSourceMetadata.class);
-		assertEquals(Version.getVersion(), metadata.getVersion());
-		assertEquals(MascTextSource.class.getCanonicalName(), metadata.getName());
 	}
 }
