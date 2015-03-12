@@ -56,6 +56,21 @@ public class MascTextSourceTest
    }
 
    @Test
+   public void testParameterizedList()
+   {
+      System.out.println("MascTextSourceTest.testList");
+      String listCommand = DataFactory.list(0, 10);
+      String response = source.execute(listCommand);
+      Map<String,Object> data = Serializer.parse(response, HashMap.class);
+      Object discriminator = data.get("discriminator");
+      assertNotNull("No discriminator returned.", discriminator);
+      assertEquals("Wrong discriminator returned", Uri.STRING_LIST, discriminator);
+      java.util.List<String> payload = (java.util.List<String>) data.get("payload");
+      assertNotNull("No payload returned.", payload);
+      assertTrue(payload.size() == 10);
+   }
+
+   @Test
    public void testGet()
    {
       System.out.println("MascTextSourceTest.testGet");
