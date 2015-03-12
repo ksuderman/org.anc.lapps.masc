@@ -1,0 +1,8 @@
+$schema "http://vocab.lappsgrid.org/schema/service-schema-1.0.0.json"
+description "Text files from the ANC's Manually Annotated SubCorpus in a JSON container"
+vendor "http://www.anc.org"
+license "cc-by"
+allow "any"
+format "text"
+encoding "utf-8"
+language "en-US"

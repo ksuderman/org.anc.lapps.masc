@@ -1,0 +1,9 @@
+//@DataSourceMetadata(
+$schema "http://vocab.lappsgrid.org/schema/datasource-schema-1.0.0.json"
+description "Annotations from the ANC's Manually Annotated SubCorpus in a JSON container"
+vendor "http://www.anc.org"
+license "cc-by"
+allow "any"
+format "lapps"
+encoding "utf-8"
+language "en-US"
