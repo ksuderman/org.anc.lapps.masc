@@ -1,35 +1,30 @@
 package org.anc.lapps.masc;
 
-import org.anc.lapps.core.AbstractDataSource;
 import org.anc.lapps.masc.index.MascJsonIndex;
-import org.lappsgrid.api.Data;
-import org.lappsgrid.discriminator.Types;
+import org.lappsgrid.discriminator.Discriminators;
+import org.lappsgrid.experimental.annotations.DataSourceMetadata;
 
 import java.io.IOException;
 
 
 /**
  * @author Jesse Stuart
+ * @author Keith Suderman
  */
-public class MascJsonSource extends AbstractDataSource
+@DataSourceMetadata(
+        description = "Annotations from the ANC's Manually Annotated SubCorpus in a JSON container",
+		  vendor = "http://www.anc.org",
+		  license = "cc-by",
+		  allow = "any",
+		  format = "lapps",
+		  encoding = "utf-8",
+		  language = "en-US"
+)
+public class MascJsonSource extends MascAbstractDataSource
 {
 
    public MascJsonSource() throws IOException
    {
-      super(new MascJsonIndex());
-   }
-
-   @Override
-   /**
-    * The text data source either returns an error or the actual text.
-    */
-   protected Data get(String key)
-   {
-      Data result = super.get(key);
-      if (result.getDiscriminator() != Types.ERROR)
-      {
-         result.setDiscriminator(Types.JSON);
-      }
-      return result;
+      super(new MascJsonIndex(), MascJsonSource.class, Discriminators.Uri.JSON_LD);
    }
 }

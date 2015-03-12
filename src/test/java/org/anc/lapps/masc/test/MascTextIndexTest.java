@@ -1,14 +1,16 @@
 package org.anc.lapps.masc.test;
 
+import org.anc.index.api.Index;
 import org.anc.lapps.masc.index.MascTextIndex;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import org.anc.index.api.Index;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Keith Suderman

@@ -8,6 +8,8 @@
 			<pattern>%date %-5level [%class{0}.%M:%line] %msg%n</pattern>
 		</encoder>
 	</appender>
+
+    <!--
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<encoder>
@@ -15,16 +17,15 @@
 		</encoder>
 		<append>true</append>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<!-- daily rollover -->
 			<fileNamePattern>/var/log/masc/datasource-%d{yyyy-MM-dd}.log</fileNamePattern>
-
-			<!-- keep 30 days' worth of history -->
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
 	</appender>
-
+    -->
+    
 	<logger name="org.anc" level="warn" />
-	<logger name="org.anc.lapps" level="info" />
+	<logger name="org.anc.lapps" level="warn" />
+    <logger name="org.anc.lapps.masc" level="debug" />
 	<root level="warn">
         <!--
 		<appender-ref ref="FILE" />
