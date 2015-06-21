@@ -53,10 +53,7 @@ public abstract class MascAbstractDataSource implements DataSource
 
 	public static boolean testing = false;
 
-	private final Logger logger; // = LoggerFactory.getLogger(MascAbstractDataSource.class);
-
-//	@Autowired
-//	private TokenDatabase tokenDatabase;
+	private final Logger logger;
 
 	protected Index index;
 
@@ -174,10 +171,11 @@ public abstract class MascAbstractDataSource implements DataSource
 							UTF8Reader reader = new UTF8Reader(file);
 							String content = reader.readString();
 							reader.close();
-							Data<String> stringData = new Data<String>();
-							stringData.setDiscriminator(returnType);
-							stringData.setPayload(content);
-							result = Serializer.toJson(stringData);
+//							Data<String> stringData = new Data<String>();
+//							stringData.setDiscriminator(returnType);
+//							stringData.setPayload(content);
+//							result = Serializer.toJson(stringData);
+							result = packageContent(content);
 						}
 						catch (IOException e)
 						{
@@ -199,6 +197,12 @@ public abstract class MascAbstractDataSource implements DataSource
 		}
 		logger.trace("Returning result {}", result);
 		return result;
+	}
+
+	protected String packageContent(String content)
+	{
+		Data<String> data = new Data<String>(returnType, content);
+		return data.asJson();
 	}
 
 	protected boolean authenticate()
