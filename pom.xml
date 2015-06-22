@@ -15,65 +15,16 @@
     <packaging>war</packaging>
     <properties>
         <lapps.api.version>2.0.0</lapps.api.version>
-        <lapps.core.version>2.0.1-SNAPSHOT</lapps.core.version>
+        <lapps.core.version>2.0.1</lapps.core.version>
         <lapps.discriminator.version>2.0.2</lapps.discriminator.version>
         <lapps.serialization.version>2.0.1</lapps.serialization.version>
-        <!-- <lapps.annotations.version>1.0.1-SNAPSHOT</lapps.annotations.version> -->
-        <lapps.metadata.version>1.0.4-SNAPSHOT</lapps.metadata.version>
+        <lapps.metadata.version>1.0.4</lapps.metadata.version>
         <anc.index.version>1.2.0</anc.index.version>
-        <!-- <groovy.version>2.4.3</groovy.version> -->
         <start-class>org.anc.lapps.masc.SpringEntryPoint</start-class>
     </properties>
     <build>
         <finalName>MascDataSource#${project.version}</finalName>
         <plugins>
-            <!--
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <annotationProcessors>
-                        <annotationProcessor>org.lappsgrid.experimental.annotation.processing.MetadataProcessor</annotationProcessor>
-                    </annotationProcessors>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <compilerId>groovy-eclipse-compiler</compilerId>
-                    <verbose>true</verbose>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.codehaus.groovy</groupId>
-                        <artifactId>groovy-eclipse-compiler</artifactId>
-                        <version>2.9.2-01</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.codehaus.groovy</groupId>
-                        <artifactId>groovy-eclipse-batch</artifactId>
-                        <version>2.4.3-01</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-eclipse-compiler</artifactId>
-                <version>2.9.2-01</version>
-                <extensions>true</extensions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-eclipse-compiler</artifactId>
-                <version>2.8.0-01</version>
-                <extensions>true</extensions>
-            </plugin>
-            -->
             <plugin>
                 <groupId>org.anc.maven.plugins</groupId>
                 <artifactId>anc-maven-plugin</artifactId>
@@ -92,44 +43,9 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--
-            <plugin>
-                <groupId>org.lappsgrid.experimental</groupId>
-                <artifactId>annotations</artifactId>
-                <version>${lapps.annotations.version}</version>
-            </plugin>
-            <plugin>
-                <groupId>org.mortbay.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>8.1.11.v20130520</version>
-            </plugin>
-            <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>src/main/resources/metadata</directory>
-                        </fileset>
-                    </filesets>
-                </configuration>
-            </plugin>
-            -->
-            <!--
-            <plugin>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.9</version>
-            </plugin>
-            -->
         </plugins>
     </build>
     <dependencies>
-        <!--
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>2.4.3</version>
-        </dependency>
-        -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -167,13 +83,6 @@
             <artifactId>metadata</artifactId>
             <version>${lapps.metadata.version}</version>
         </dependency>
-        <!--
-        <dependency>
-            <groupId>org.lappsgrid.experimental</groupId>
-            <artifactId>annotations</artifactId>
-            <version>${lapps.annotations.version}</version>
-        </dependency>
-        -->
         <dependency>
             <groupId>org.anc.json</groupId>
             <artifactId>validator</artifactId>
