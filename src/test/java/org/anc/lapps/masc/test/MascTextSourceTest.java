@@ -85,4 +85,11 @@ public class MascTextSourceTest
       assertTrue(payload instanceof String);
       System.out.println(payload);
    }
+
+   @Test
+   public void testGetMetadata()
+   {
+      String json = source.getMetadata();
+      System.out.println(json);
+   }
 }

@@ -1,22 +1,21 @@
 package org.anc.lapps.masc.test;
 
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.anc.lapps.masc.MascAbstractDataSource;
 import org.anc.lapps.masc.MascJsonSource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.api.DataSource;
+import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.serialization.Serializer;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 import static org.lappsgrid.discriminator.Discriminators.Uri;
 
 @Ignore
