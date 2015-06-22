@@ -5,6 +5,7 @@ import org.anc.io.UTF8Reader;
 //import org.anc.lapps.oauth.database.Token;
 //import org.anc.lapps.oauth.database.TokenDatabase;
 import org.lappsgrid.api.DataSource;
+import org.lappsgrid.metadata.DataSourceMetadata;
 import org.lappsgrid.serialization.Data;
 import org.lappsgrid.serialization.Error;
 import org.lappsgrid.serialization.Serializer;
@@ -72,7 +73,7 @@ public abstract class MascAbstractDataSource implements DataSource
 		this.returnType = returnType;
 		this.logger = LoggerFactory.getLogger(dsClass);
 		this.size = index.keys().size();
-		this.metadata = loadMetadata("metadata/" + dsClass.getName() + ".json");
+//		this.metadata = loadMetadata("metadata/" + dsClass.getName() + ".json");
 
 	}
 
@@ -107,6 +108,8 @@ public abstract class MascAbstractDataSource implements DataSource
 			case Uri.SIZE:
 				logger.debug("Fetching size");
 				Data<Integer> sizeData = new Data<Integer>();
+				Data d;
+
 				sizeData.setDiscriminator(Uri.OK);
 				sizeData.setPayload(size);
 				result = Serializer.toJson(sizeData);
@@ -324,9 +327,21 @@ public abstract class MascAbstractDataSource implements DataSource
 //		return true;
 	}
 
-	public String getMetadata()
+//	public String getMetadata()
+//	{
+//		return metadata;
+//	}
+
+	protected DataSourceMetadata getCommonMetadata()
 	{
-		return metadata;
+		DataSourceMetadata md = new DataSourceMetadata();
+		md.setAllow(Uri.ANY);
+		md.setEncoding("UTF-8");
+		md.setVersion(Version.getVersion());
+		md.setVendor("http://www.anc.org");
+		md.addLanguage("en-US");
+		md.setLicense(Uri.CC_BY);
+		return md;
 	}
 
 	protected String getToken(MimeHeaders headers)
@@ -365,34 +380,34 @@ public abstract class MascAbstractDataSource implements DataSource
 		return null;
 	}
 
-	protected String loadMetadata(String metadataPath)
-	{
-		ClassLoader loader = this.getClass().getClassLoader();
-//		System.out.println("Attempting to load metadata from " + metadataPath);
-		InputStream inputStream = loader.getResourceAsStream(metadataPath);
-		if (inputStream == null)
-		{
-			return error("Unable to locate metadata at: " + metadataPath);
-		}
-
-		String result;
-		try
-		{
-			UTF8Reader reader = new UTF8Reader(inputStream);
-			String json = reader.readString();
-			reader.close();
-			Data<String> data = new Data<String>();
-			data.setDiscriminator(Uri.META);
-			data.setPayload(json);
-			result = data.asJson();
-		}
-		catch (IOException e)
-		{
-			//return DataFactory.error("Unable to load metadata.", e);
-			result = new Error("Unable to load metadata.").asJson();
-		}
-		return result;
-	}
+//	protected String loadMetadata(String metadataPath)
+//	{
+//		ClassLoader loader = this.getClass().getClassLoader();
+////		System.out.println("Attempting to load metadata from " + metadataPath);
+//		InputStream inputStream = loader.getResourceAsStream(metadataPath);
+//		if (inputStream == null)
+//		{
+//			return error("Unable to locate metadata at: " + metadataPath);
+//		}
+//
+//		String result;
+//		try
+//		{
+//			UTF8Reader reader = new UTF8Reader(inputStream);
+//			String json = reader.readString();
+//			reader.close();
+//			Data<String> data = new Data<String>();
+//			data.setDiscriminator(Uri.META);
+//			data.setPayload(json);
+//			result = data.asJson();
+//		}
+//		catch (IOException e)
+//		{
+//			//return DataFactory.error("Unable to load metadata.", e);
+//			result = new Error("Unable to load metadata.").asJson();
+//		}
+//		return result;
+//	}
 
 	protected String error(String message, Throwable t)
 	{
