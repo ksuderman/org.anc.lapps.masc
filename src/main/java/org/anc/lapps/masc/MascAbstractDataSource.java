@@ -82,6 +82,7 @@ public abstract class MascAbstractDataSource implements DataSource
 		logger.debug("Executing request: {}", input);
 		// Clear any existing error message.
 		errorMessage = null;
+
 		if (!authenticate())
 		{
 			logger.error("Unauthorized access attempted.");
