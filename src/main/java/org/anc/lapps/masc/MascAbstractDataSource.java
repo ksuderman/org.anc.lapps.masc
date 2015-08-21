@@ -83,16 +83,16 @@ public abstract class MascAbstractDataSource implements DataSource
 		// Clear any existing error message.
 		errorMessage = null;
 
-		if (!authenticate())
-		{
-			logger.error("Unauthorized access attempted.");
-			if (errorMessage == null)
-			{
-				errorMessage = "Unauthorized.";
-			}
-			logger.error(errorMessage);
-			return new Error(errorMessage).asJson();
-		}
+//		if (!authenticate())
+//		{
+//			logger.error("Unauthorized access attempted.");
+//			if (errorMessage == null)
+//			{
+//				errorMessage = "Unauthorized.";
+//			}
+//			logger.error(errorMessage);
+//			return new Error(errorMessage).asJson();
+//		}
 
 
 		Map<String,Object> map = Serializer.parse(input, HashMap.class);
@@ -123,7 +123,7 @@ public abstract class MascAbstractDataSource implements DataSource
 				{
 					payload = new HashMap<String,String>();
 				}
-				System.out.println("Payload is " + payload.getClass().getName());
+//				System.out.println("Payload is " + payload.getClass().getName());
 				//System.out.println(payload.toString());
 				//Map<String,Object> offsets = Serializer.parse(payload.toString(), Map.class);
 				Object startValue = payload.get("start");
