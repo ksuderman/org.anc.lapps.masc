@@ -11,19 +11,11 @@ import java.util.List;
 /**
  * @author Keith Suderman
  */
-public class MascTextIndex implements Index
+public class MascTextIndex extends MascIndex
 {
-   protected Index index;
-
    public MascTextIndex() throws IOException
    {
-      index = new IndexImpl("masc3.index");
-   }
-
-   @Override
-   public int size()
-   {
-      return index.size();
+      super("masc3.index");
    }
 
    @Override
@@ -38,11 +30,5 @@ public class MascTextIndex implements Index
       File parent = headerFile.getParentFile();
       String name = headerFile.getName().replace(".hdr", ".txt");
       return new File(parent, name);
-   }
-
-   @Override
-   public List<String> keys()
-   {
-      return new ArrayList<String>(index.keys());
    }
 }

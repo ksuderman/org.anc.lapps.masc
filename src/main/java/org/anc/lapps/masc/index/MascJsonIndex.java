@@ -11,30 +11,10 @@ import java.util.List;
 /**
  * @author Jesse Stuart
  */
-public class MascJsonIndex implements Index
+public class MascJsonIndex extends MascIndex
 {
-    protected Index index;
-
     public MascJsonIndex() throws IOException
     {
-        index = new IndexImpl("masc3-json.index");
-    }
-
-    @Override
-    public int size()
-    {
-        return index.size();
-    }
-
-    @Override
-    public File get(String id)
-    {
-        return index.get(id);
-    }
-
-    @Override
-    public List<String> keys()
-    {
-        return new ArrayList<String>(index.keys());
+        super("masc3-json.index");
     }
 }

@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.lappsgrid.api.DataSource;
 import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.serialization.Serializer;
+import org.lappsgrid.serialization.lif.Container;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -61,10 +62,10 @@ public class MascJsonSourceTest
       Map<String,Object> map = Serializer.parse(response, HashMap.class);
       Object discriminator = map.get("discriminator");
       assertNotNull("No discriminator returned.", discriminator);
-      assertEquals("Wrong discriminator type returned.", Uri.JSON_LD, discriminator);
+      assertEquals("Wrong discriminator type returned.", Uri.LAPPS, discriminator);
       Object payload = map.get("payload");
       assertNotNull("No payload returned.", payload);
-      assertTrue(payload instanceof String);
-      System.out.println(payload);
+      assertTrue(payload instanceof Map);
+      //System.out.println(payload);
    }
 }

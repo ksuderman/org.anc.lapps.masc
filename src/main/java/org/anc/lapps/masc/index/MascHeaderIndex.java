@@ -9,27 +9,12 @@ import org.anc.index.core.IndexImpl;
 /**
  * @author Keith Suderman
  */
-public class MascHeaderIndex implements Index
+public class MascHeaderIndex extends MascIndex
 {
-   protected IndexImpl index;
-
    public MascHeaderIndex() throws IOException
    {
-      index = new IndexImpl();
-      index.loadMasc3Index();
-   }
-
-   @Override
-   public int size() { return index.size(); }
-   @Override
-   public File get(String key)
-   {
-      return index.get(key);
-   }
-
-   @Override
-   public List<String> keys()
-   {
-      return index.keys();
+//      index = new IndexImpl();
+//      index.loadMasc3Index();
+      super("masc3.index");
    }
 }

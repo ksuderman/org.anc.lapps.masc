@@ -10,27 +10,10 @@ import java.util.List;
 /**
  * @author Keith Suderman
  */
-public class MascFullIndex implements Index
+public class MascFullIndex extends MascIndex
 {
-   protected Index index;
-
    public MascFullIndex() throws IOException
    {
-      index = new IndexImpl("full-masc3.index");
+      super("full-masc3.index");
    }
-
-   @Override
-   public int size() { return index.size(); }
-   @Override
-   public File get(String key)
-   {
-      return index.get(key);
-   }
-
-   @Override
-   public List<String> keys()
-   {
-      return index.keys();
-   }
-
 }

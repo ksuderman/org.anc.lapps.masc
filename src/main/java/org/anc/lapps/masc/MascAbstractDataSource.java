@@ -4,6 +4,7 @@ import org.anc.index.api.Index;
 import org.anc.io.UTF8Reader;
 //import org.anc.lapps.oauth.database.Token;
 //import org.anc.lapps.oauth.database.TokenDatabase;
+import org.anc.lapps.masc.index.MascIndex;
 import org.lappsgrid.api.DataSource;
 import org.lappsgrid.metadata.DataSourceMetadata;
 import org.lappsgrid.serialization.Data;
@@ -18,10 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import jp.go.nict.langrid.commons.net.URLUtil;
 import jp.go.nict.langrid.commons.ws.ServiceContext;
@@ -54,9 +52,9 @@ public abstract class MascAbstractDataSource implements DataSource
 
 	public static boolean testing = false;
 
-	private final Logger logger;
+	protected final Logger logger;
 
-	protected Index index;
+	protected MascIndex index;
 
 	/** Metadata for the service is cached in this field so it does not need to be read for disk every request. */
 	protected String metadata;
@@ -67,7 +65,7 @@ public abstract class MascAbstractDataSource implements DataSource
 	/** Error message set in the <tt>authenticate</tt> method. */
 	private String errorMessage;
 
-	public MascAbstractDataSource(Index index, Class<? extends MascAbstractDataSource> dsClass, String returnType)
+	public MascAbstractDataSource(MascIndex index, Class<? extends MascAbstractDataSource> dsClass, String returnType)
 	{
 		this.index = index;
 		this.returnType = returnType;
@@ -193,6 +191,9 @@ public abstract class MascAbstractDataSource implements DataSource
 				logger.warn("Deprecated discriminator GETMETADATA used.");
 				result = metadata;
 				break;
+			case Uri.QUERY:
+				result = query(map.get("payload").toString());
+				break;
 			default:
 				String message = String.format("Invalid discriminator: %s, Uri.List is %s", discriminator, Uri.LIST);
 				//logger.warn(message);
@@ -201,6 +202,13 @@ public abstract class MascAbstractDataSource implements DataSource
 		}
 		logger.trace("Returning result {}", result);
 		return result;
+	}
+
+	protected String query(String pattern)
+	{
+		List<String> ids = index.query(pattern);
+		Data<List<String>> result = new Data<>(Uri.STRING_LIST, ids);
+		return result.asJson();
 	}
 
 	protected String packageContent(String content)
